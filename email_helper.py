@@ -1,4 +1,4 @@
-from creds.py import gMailLogin, gMailPw
+from creds import smtpServer
 '''
     Usage:
 
@@ -28,9 +28,7 @@ def send_mail(recipient, subject, message, sender):
     message['To'] = recipient
 
     # Create SMTP connection object to localhost
-    smtp_conn = smtplib.SMTP('smtp.gmail.com:587')
-    smtp_conn.starttls()
-    smtp_conn.login(gMailLogin, gMailPw)
+    smtp_conn = smtplib.SMTP(smtpServer)
     # Send the email
 
     smtp_conn.sendmail(sender, recipient, message.as_string())
