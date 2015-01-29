@@ -34,50 +34,11 @@ def makeChart(dictOfListsToGraph, timeIncrement, title, fileName):
     longest += 1
     labelRange = range(int(timeIncrement), longest, int(timeIncrement))
     labelRange = map(str, labelRange)
-    # print labelRange
-    # strLabelRange = []
-    # for aLabel in labelRange:
-    #     print str(labelRange[aLabel])
-        # strLabelRange.append(str(labelRange[aLabel]))
+
     line_chart.x_labels = labelRange
     for anItem in dictOfListsToGraph:
         line_chart.add(anItem, dictOfListsToGraph[anItem])
     line_chart.render_to_file(fileName)
-
-# def getBytesAndPacketsV3 (device, snmpAuthTuple, waitBetweenPollsInMinutes, numberOfPolls):
-#     '''
-#     Given a tuple of device tuples if the format (<IP>, <port>) and an SNMPv3 authentication tuple
-#     in the format (<username>, <authentication key>, <encryption key>), return a dictionary where
-#     the key is the text definition of the value, and the value is a list of measurements gathered.
-#
-#     Measurements taken at each poll interval are Bytes In/Out and Packets In/Out.
-#     '''
-#
-#     snmp_oids = {
-#         'sysName':'1.3.6.1.2.1.1.5.0',
-#         'sysUptime':'1.3.6.1.2.1.1.3.0',
-#         'ifDescr_fa4':'1.3.6.1.2.1.2.2.1.2.5',
-#         'ifInOctets_fa4':'1.3.6.1.2.1.2.2.1.10.5',
-#         'ifInUcastPkts_fa4':'1.3.6.1.2.1.2.2.1.11.5',
-#         'ifOutOctets_fa4':'1.3.6.1.2.1.2.2.1.16.5',
-#         'ifOutUcastPkts_fa4':'1.3.6.1.2.1.2.2.1.17.5',
-#         }
-#
-#     rtnDict = dict()
-#     rtnDict["Bytes In"] = []
-#     rtnDict["Bytes Out"] = []
-#     rtnDict["Packets In"] = []
-#     rtnDict["Packets Out"] = []
-#
-#     for anInteration in range(numberOfPolls):
-#         rtnDict["Bytes In"].append(snmp_extract(snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifInOctets_fa4'])))
-#         rtnDict["Bytes Out"].append(snmp_extract(snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifOutOctets_fa4'])))
-#         rtnDict["Packets In"].append(snmp_extract(snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifInUcastPkts_fa4'])))
-#         rtnDict["Packets Out"].append(snmp_extract(snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifOutUcastPkts_fa4'])))
-#
-#         time.sleep(waitBetweenPollsInMinutes * 60)
-#
-#     return rtnDict
 
 if __name__ == "__main__":
     numberOfPolls = 12
@@ -94,10 +55,10 @@ if __name__ == "__main__":
 
     bytesDict = dict()
     pktsDict = dict()
-    bytesDict["Bytes In"] = []
-    bytesDict["Bytes Out"] = []
-    pktsDict["Packets In"] = []
-    pktsDict["Packets Out"] = []
+    bytesDict["Bytes In"] = list()
+    bytesDict["Bytes Out"] = list()
+    pktsDict["Packets In"] = list()
+    pktsDict["Packets Out"] = list()
 
 
     for anInteration in range(numberOfPolls):
@@ -109,7 +70,6 @@ if __name__ == "__main__":
                                          (snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifInUcastPkts_fa4']))))
         pktsDict["Packets Out"].append(int(snmp_extract
                                           (snmp_get_oid_v3(pynet_rtr1, snmp_user, oid=snmp_oids['ifOutUcastPkts_fa4']))))
-        print bytesDict
 
         time.sleep(waitBetweenPollsInMinutes * 60)
 
